@@ -1,4 +1,4 @@
-package domain
+package service
 
 import (
 	"errors"
@@ -8,20 +8,20 @@ import (
 	"github.com/arjun-saseendran/skill-map/models"
 )
 
-type User interface {
+type UserService interface {
 	Create(userData dto.UserCreateInput) (*models.User, error)
 	List() ([]models.User, error)
 	Get(id string) (*models.User, error)
 	Update(id string, userData *dto.UserUpdateInput) (*models.User, error)
 	Delete(id string) error
 }
-type user struct{}
+type userService struct{}
 
-func NewUser() User {
-	return &user{}
+func NewUserService() UserService {
+	return &userService{}
 }
 
-func (u *user) Create(userData dto.UserCreateInput) (*models.User, error) {
+func (userSer *userService) Create(userData dto.UserCreateInput) (*models.User, error) {
 	newUser := &models.User{FullName: userData.FullName, Email: userData.Email}
 	db.DB.Create(newUser)
 	if newUser.ID == 0 {
@@ -30,13 +30,13 @@ func (u *user) Create(userData dto.UserCreateInput) (*models.User, error) {
 	return newUser, nil
 }
 
-func (u *user) List() ([]models.User, error) {
+func (userSer *userService) List() ([]models.User, error) {
 	var users []models.User
 	db.DB.Find(&users)
 	return users, nil
 }
 
-func (u *user) Get(id string) (*models.User, error) {
+func (userSer *userService) Get(id string) (*models.User, error) {
 	singleUser := models.NewUser()
 	db.DB.First(&singleUser, id)
 	if singleUser.ID == 0 {
@@ -45,7 +45,7 @@ func (u *user) Get(id string) (*models.User, error) {
 	return singleUser, nil
 }
 
-func (u *user) Update(id string, userData *dto.UserUpdateInput) (*models.User, error) {
+func (userSer *userService) Update(id string, userData *dto.UserUpdateInput) (*models.User, error) {
 	updateUser := models.NewUser()
 	db.DB.First(updateUser, id)
 	if updateUser.ID == 0 {
@@ -55,7 +55,7 @@ func (u *user) Update(id string, userData *dto.UserUpdateInput) (*models.User, e
 	return updateUser, nil
 }
 
-func (u *user) Delete(id string) error {
+func (userSer *userService) Delete(id string) error {
 	deleteUser := models.NewUser()
 	db.DB.First(deleteUser, id)
 	if deleteUser.ID == 0 {
