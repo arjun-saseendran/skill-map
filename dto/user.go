@@ -6,7 +6,7 @@ type UserCreateInput struct {
 }
 
 type UserUpdateInput struct {
-	FullName stirng `json:"fullname"`
+	FullName string `json:"fullname"`
 	Email    string `json:"email"`
 }
 

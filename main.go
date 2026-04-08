@@ -1,18 +1,26 @@
 package main
 
 import (
-	"log"
-
+	"github.com/arjun-saseendran/skill-map/db"
+	"github.com/arjun-saseendran/skill-map/handlers"
+	"github.com/arjun-saseendran/skill-map/service"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSONP(200, gin.H{"msg": "Welcome to Go Web Development"})
-	})
+func init() {
+	db.ConnectDB()
+}
 
-	if err := r.Run(); err != nil {
-		log.Fatal("Error starting server!")
-	}
+func main() {
+	router := gin.Default()
+	router.Use(cors.Default())
+
+	userService := service.NewUserService()
+
+	userHandler := handlers.NewUserHandlerFrom(userService)
+	userHandler.RegisterEndpoints(router)
+
+	router.Run()
+
 }
