@@ -9,7 +9,7 @@ import (
 )
 
 type UserService interface {
-	Create(userData dto.UserCreateInput) (*models.User, error)
+	Create(userData *dto.UserCreateInput) (*models.User, error)
 	List() ([]models.User, error)
 	Get(id string) (*models.User, error)
 	Update(id string, userData *dto.UserUpdateInput) (*models.User, error)
@@ -21,7 +21,7 @@ func NewUserService() UserService {
 	return &userService{}
 }
 
-func (userSer *userService) Create(userData dto.UserCreateInput) (*models.User, error) {
+func (userSer *userService) Create(userData *dto.UserCreateInput) (*models.User, error) {
 	newUser := &models.User{FullName: userData.FullName, Email: userData.Email}
 	db.DB.Create(newUser)
 	if newUser.ID == 0 {
