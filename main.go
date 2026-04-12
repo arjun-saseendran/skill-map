@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/arjun-saseendran/skill-map/db"
 	"github.com/arjun-saseendran/skill-map/handlers"
 	"github.com/arjun-saseendran/skill-map/service"
@@ -22,6 +24,13 @@ func main() {
 	userHandler := handlers.NewUserHandlerFrom(userService)
 	userHandler.RegisterEndpoints(router)
 
-	router.Run()
+	skillHandler := handlers.NewSkillHandleFrom(skillService)
+	skillHandler.RegisterEndpoints(router)
+
+	err := router.Run()
+	if err != nil {
+		fmt.Println("sever failed to run.")
+		return
+	}
 
 }
