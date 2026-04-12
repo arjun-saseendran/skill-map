@@ -17,6 +17,7 @@ func main() {
 	router.Use(cors.Default())
 
 	userService := service.NewUserService()
+	skillService := service.NewSkillService()
 
 	userHandler := handlers.NewUserHandlerFrom(userService)
 	userHandler.RegisterEndpoints(router)
